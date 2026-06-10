@@ -1190,7 +1190,7 @@ async function drawFooter(doc, surat, qrDataUrl, pageNum, totalPages) {
   const qrSz    = 55;
   const footerY = PH - 75;
   const verifikasiTxt =
-    'Dokumen ini ditandatangani dan distempel secara elektronik melalui Aplikasi Repositori Informasi Surat dan Administrasi Pesantren Sukamiskin (RISALATIN) MA YPP Sukamiskin' +
+    'Dokumen ini ditandatangani dan distempel secara elektronik melalui Aplikasi Repositori Informasi Surat dan Administrasi Terpadu (RISALAT) YAPINU' +
     ', untuk verifikasi surat scan atau klik QRCode.';
 
   // QR kiri bawah

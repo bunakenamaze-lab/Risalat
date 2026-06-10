@@ -1,0 +1,32 @@
+# Dependencies
+node_modules/
+
+# Environment variables — JANGAN dicommit ke repo
+.env
+backend/.env
+backend/.env.production
+frontend/.env.local
+
+# Frontend build output — ikut ke repo agar Hostinger bisa serve langsung
+# Jalankan: cd frontend && npm run build  sebelum git push
+
+# Uploads (file yang diupload user)
+backend/uploads/*/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Editor
+.vscode/
+.idea/
+
+# Logs
+*.log
+npm-debug.log*
+
+# Prisma generated
+backend/node_modules/
+
+# Test files
+test-*.pdf

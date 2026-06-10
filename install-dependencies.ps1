@@ -1,8 +1,8 @@
-# RISALATIN - Script Instalasi Dependensi
+# RISALAT - Script Instalasi Dependensi
 # Jalankan sebagai Administrator di PowerShell
 
 Write-Host "========================================" -ForegroundColor Green
-Write-Host "  RISALATIN - Instalasi Dependensi" -ForegroundColor Green
+Write-Host "  RISALAT - Instalasi Dependensi" -ForegroundColor Green
 Write-Host "========================================" -ForegroundColor Green
 Write-Host ""
 

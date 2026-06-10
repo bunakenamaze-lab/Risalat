@@ -1,7 +1,7 @@
 {
-  "name": "risalatin-frontend",
+  "name": "risalat-frontend",
   "version": "1.0.0",
-  "description": "RISALATIN Frontend - Repositori Informasi Surat dan Administrasi Pesantren Sukamiskin",
+  "description": "RISALAT Frontend - Repositori Informasi Surat dan Administrasi Terpadu YAPINU",
   "type": "module",
   "scripts": {
     "dev": "vite",

@@ -60,7 +60,7 @@ export default function VerifikasiPublikPage() {
             </p>
             <div className="mt-6 p-4 bg-red-50 rounded-xl">
               <p className="text-xs text-red-600">
-                ⚠️ Dokumen ini tidak dapat diverifikasi keasliannya melalui sistem RISALATIN.
+                ⚠️ Dokumen ini tidak dapat diverifikasi keasliannya melalui sistem RISALAT.
               </p>
             </div>
           </div>
@@ -194,7 +194,7 @@ export default function VerifikasiPublikPage() {
               <div className="border-t border-gray-100 pt-4">
                 <div className="flex items-center gap-2 text-xs text-gray-400">
                   <ShieldCheckIcon className="w-4 h-4 text-primary-500" />
-                  <p>Diverifikasi oleh Repositori Informasi Surat dan Administrasi Pesantren Sukamiskin (RISALATIN)</p>
+                  <p>Diverifikasi oleh Repositori Informasi Surat dan Administrasi Terpadu YAPINU (RISALAT)</p>
                 </div>
                 <p className="text-xs text-gray-400 mt-1">
                   Waktu verifikasi: {formatDateTime(new Date())}
@@ -205,7 +205,7 @@ export default function VerifikasiPublikPage() {
         )}
 
         <p className="text-center text-primary-200 text-xs mt-4">
-          RISALATIN — Repositori Informasi Surat dan Administrasi Pesantren Sukamiskin
+          RISALAT — Repositori Informasi Surat dan Administrasi Terpadu YAPINU
         </p>
       </motion.div>
     </div>

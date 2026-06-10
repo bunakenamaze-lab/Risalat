@@ -1,8 +1,8 @@
-# RISALATIN - Script Setup Otomatis
+# RISALAT - Script Setup Otomatis
 # Pastikan Node.js dan MySQL sudah terinstall
 
 Write-Host "========================================" -ForegroundColor Green
-Write-Host "  RISALATIN - Setup Otomatis" -ForegroundColor Green
+Write-Host "  RISALAT - Setup Otomatis" -ForegroundColor Green
 Write-Host "========================================" -ForegroundColor Green
 Write-Host ""
 

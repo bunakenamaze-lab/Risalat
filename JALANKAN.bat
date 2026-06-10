@@ -1,11 +1,11 @@
 @echo off
-title RISALATIN - Menjalankan Server
+title RISALAT - Menjalankan Server
 color 0A
 
 echo.
 echo  ============================================
-echo    RISALATIN - Repositori Informasi Surat
-echo    dan Administrasi Pesantren
+echo    RISALAT - Repositori Informasi Surat
+echo    dan Administrasi Terpadu YAPINU
 echo  ============================================
 echo.
 
@@ -28,13 +28,13 @@ echo       MySQL OK
 
 :: Jalankan Backend
 echo [2/3] Menjalankan Backend (port 5000)...
-start "RISALATIN Backend" cmd /k "cd /d %~dp0backend && node src/server.js"
+start "RISALAT Backend" cmd /k "cd /d %~dp0backend && node src/server.js"
 timeout /t 3 /nobreak >nul
 echo       Backend OK
 
 :: Jalankan Frontend
 echo [3/3] Menjalankan Frontend (port 5173)...
-start "RISALATIN Frontend" cmd /k "cd /d %~dp0frontend && npm run dev"
+start "RISALAT Frontend" cmd /k "cd /d %~dp0frontend && npm run dev"
 timeout /t 5 /nobreak >nul
 echo       Frontend OK
 

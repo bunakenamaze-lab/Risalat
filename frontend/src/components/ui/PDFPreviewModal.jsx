@@ -41,7 +41,7 @@ export default function PDFPreviewModal({ isOpen, onClose, suratId, nomorSurat }
       // Bangun URL langsung ke endpoint (untuk mobile open-in-tab / Google Docs)
       const base = (import.meta.env.VITE_API_URL || '/api').replace(/\/api$/, '')
       const token = (() => {
-        try { return JSON.parse(localStorage.getItem('risalatin-auth') || '{}')?.state?.token } catch { return null }
+        try { return JSON.parse(localStorage.getItem('risalat-auth') || '{}')?.state?.token } catch { return null }
       })()
       setDirectUrl(`${base}/api/surat-keluar/${suratId}/preview${token ? `?token=${token}` : ''}`)
     } catch (err) {

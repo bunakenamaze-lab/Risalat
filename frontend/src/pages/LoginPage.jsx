@@ -74,8 +74,8 @@ export default function LoginPage() {
                 </div>
               )}
             </motion.div>
-            <h1 className="text-2xl font-bold text-white mb-1">RISALATIN</h1>
-            <p className="text-primary-200 text-sm">Repositori Informasi Surat dan Administrasi Pesantren Sukamiskin</p>
+            <h1 className="text-2xl font-bold text-white mb-1">RISALAT</h1>
+            <p className="text-primary-200 text-sm">Repositori Informasi Surat dan Administrasi Terpadu YAPINU</p>
           </div>
 
           {/* Form */}
@@ -139,7 +139,7 @@ export default function LoginPage() {
 
         {/* Footer */}
         <p className="text-center text-primary-200 text-xs mt-6">
-          RISALATIN © {new Date().getFullYear()} — Repositori Informasi Surat dan Administrasi Pesantren Sukamiskin
+          RISALAT © {new Date().getFullYear()} — Repositori Informasi Surat dan Administrasi Terpadu YAPINU
         </p>
       </motion.div>
     </div>

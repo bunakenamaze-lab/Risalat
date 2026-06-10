@@ -23,9 +23,9 @@ export default defineConfig({
       filename: 'sw-custom.js',
       includeAssets: ['favicon.svg', 'logo-org.png'],
       manifest: {
-        name: 'RISALATIN - Repositori Informasi Surat dan Administrasi Pesantren Sukamiskin',
-        short_name: 'RISALATIN',
-        description: 'Repositori Informasi Surat dan Administrasi Pesantren Sukamiskin',
+        name: 'RISALAT - Repositori Informasi Surat dan Administrasi Terpadu YAPINU',
+        short_name: 'RISALAT',
+        description: 'Repositori Informasi Surat dan Administrasi Terpadu YAPINU',
         theme_color: '#166534',
         background_color: '#166534',
         display: 'standalone',
