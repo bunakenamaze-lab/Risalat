@@ -9,17 +9,29 @@ const FONTS_DIR       = path.join(__dirname, 'fonts');
 const FONT_ARAB_R     = path.join(FONTS_DIR, 'TraditionalArabic.ttf');
 const FONT_ARAB_B     = path.join(FONTS_DIR, 'TraditionalArabicBold.ttf');
 const FONT_NASKH      = path.join(FONTS_DIR, 'DecoTypeNaskhSwashes.ttf');
+const FONT_NARROW_R   = path.join(FONTS_DIR, 'ArialNarrow.ttf');
+const FONT_NARROW_B   = path.join(FONTS_DIR, 'ArialNarrowBold.ttf');
+const FONT_NARROW_I   = path.join(FONTS_DIR, 'ArialNarrowItalic.ttf');
+const FONT_NARROW_BI  = path.join(FONTS_DIR, 'ArialNarrowBoldItalic.ttf');
+const FONT_TRAJAN_R   = path.join(FONTS_DIR, 'TrajanPro-Regular.ttf');
+const FONT_TRAJAN_B   = path.join(FONTS_DIR, 'TrajanPro-Bold.otf');
 const HAS_ARAB        = fs2.existsSync(FONT_ARAB_R);
 const HAS_NASKH       = fs2.existsSync(FONT_NASKH);
+const HAS_NARROW      = fs2.existsSync(FONT_NARROW_R);
+const HAS_TRAJAN      = fs2.existsSync(FONT_TRAJAN_R);
 
 // ── FONT NAMES ───────────────────────────────────────────────────────────[...]
-const F_REG       = 'Times-Roman';
-const F_BOLD      = 'Times-Bold';
-const F_ITAL      = 'Times-Italic';
-const F_BOLD_ITAL = 'Times-BoldItalic';
+// Teks isi surat menggunakan Arial Narrow (fallback Times jika tidak tersedia)
+const F_REG       = HAS_NARROW ? 'ArialNarrow'         : 'Times-Roman';
+const F_BOLD      = HAS_NARROW ? 'ArialNarrowBold'     : 'Times-Bold';
+const F_ITAL      = HAS_NARROW ? 'ArialNarrowItalic'   : 'Times-Italic';
+const F_BOLD_ITAL = HAS_NARROW ? 'ArialNarrowBoldItalic' : 'Times-BoldItalic';
 const F_ARAB      = 'ArabFont';
 const F_ARAB_BOLD = 'ArabFontBold';
 const F_NASKH     = 'NaskhFont';
+// Font Trajan Pro — khusus nama lembaga di kop surat
+const F_TRAJAN    = HAS_TRAJAN ? 'TrajanPro' : F_BOLD;
+const F_TRAJAN_B  = HAS_TRAJAN ? 'TrajanProBold' : F_BOLD;
 
 // ── PAGE CONSTANTS ─────────────────────────────────────────────────────────[...]
 const ML = 57;   // margin left
@@ -65,6 +77,23 @@ function isArabic(s) {
 }
 
 function registerArabFonts(doc) {
+  // Daftarkan Arial Narrow untuk teks isi surat
+  if (HAS_NARROW) {
+    try {
+      doc.registerFont('ArialNarrow',           FONT_NARROW_R);
+      doc.registerFont('ArialNarrowBold',       FONT_NARROW_B);
+      doc.registerFont('ArialNarrowItalic',     FONT_NARROW_I);
+      doc.registerFont('ArialNarrowBoldItalic', FONT_NARROW_BI);
+    } catch (_) {}
+  }
+  // Daftarkan Trajan Pro untuk nama lembaga di kop surat
+  if (HAS_TRAJAN) {
+    try {
+      doc.registerFont('TrajanPro',     FONT_TRAJAN_R);
+      doc.registerFont('TrajanProBold', FONT_TRAJAN_B);
+    } catch (_) {}
+  }
+  // Daftarkan font Arab
   if (HAS_ARAB) {
     try {
       doc.registerFont(F_ARAB, FONT_ARAB_R);
@@ -917,7 +946,7 @@ async function drawKopSurat(doc, organisasi, pageY) {
   // Tingkatan — hanya render jika tidak kosong
   if (tingkatan) {
     doc.font(F_BOLD).fontSize(FS_KOP_TINGKAT).fillColor(GREEN)
-       .text(tingkatan.toUpperCase(), textX, y, { width: textW, align: 'center' });
+       .text(tingkatan.toUpperCase(), textX, y, { width: textW, align: 'right' });
     y = doc.y + 1;
   }
 
@@ -925,31 +954,31 @@ async function drawKopSurat(doc, organisasi, pageY) {
   if (namaArab && HAS_ARAB) {
     try {
       doc.font(F_ARAB).fontSize(FS_KOP_ARAB).fillColor(GREEN)
-         .text(reshapeArabic(namaArab), textX, y, { width: textW, align: 'center' });
+         .text(reshapeArabic(namaArab), textX, y, { width: textW, align: 'right' });
       y = doc.y + 2;
     } catch (err) {
       console.warn('⚠️ Gagal render baris Arab di kop surat:', err.message);
     }
   }
 
-  // Nama organisasi (Latin) — hanya render jika tidak kosong
+  // Nama organisasi (Latin) — font Trajan Pro, hanya render jika tidak kosong
   if (namaOrg) {
-    doc.font(F_BOLD).fontSize(FS_KOP_NAMA).fillColor(GREEN)
-       .text(namaOrg.toUpperCase(), textX, y, { width: textW, align: 'center' });
+    doc.font(F_TRAJAN_B).fontSize(FS_KOP_NAMA).fillColor(GREEN)
+       .text(namaOrg.toUpperCase(), textX, y, { width: textW, align: 'right' });
     y = doc.y + 1;
   }
 
   // Daerah
   if (daerah) {
     doc.font(F_BOLD).fontSize(FS_KOP_DAERAH).fillColor(GREEN)
-       .text(daerah.toUpperCase(), textX, y, { width: textW, align: 'center' });
+       .text(daerah.toUpperCase(), textX, y, { width: textW, align: 'right' });
     y = doc.y + 1;
   }
 
   // Alamat
   if (alamat) {
     doc.font(F_REG).fontSize(FS_KOP_ALAMAT).fillColor('#333333')
-       .text(alamat, textX, y, { width: textW, align: 'center' });
+       .text(alamat, textX, y, { width: textW, align: 'right' });
     y = doc.y + 1;
   }
 
@@ -961,7 +990,7 @@ async function drawKopSurat(doc, organisasi, pageY) {
   const kontak = kontakParts.join('  |  ');
   if (kontak) {
     doc.font(F_REG).fontSize(FS_KOP_KONTAK).fillColor('#333333')
-       .text(kontak, textX, y, { width: textW, align: 'center' });
+       .text(kontak, textX, y, { width: textW, align: 'right' });
     y = doc.y + 1;
   }
 

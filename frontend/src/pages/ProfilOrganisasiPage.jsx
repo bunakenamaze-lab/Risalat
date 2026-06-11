@@ -225,7 +225,7 @@ export default function ProfilOrganisasiPage() {
                   </div>
                 )}
                 {/* Teks kop */}
-                <div className="flex-1 text-center" style={{ lineHeight: 1.25 }}>
+                <div className="flex-1 text-right" style={{ lineHeight: 1.25 }}>
                   {/* Tingkatan — hanya jika diisi */}
                   {form.tingkatanOrg && (
                     <p style={{ fontSize: 10, fontWeight: 700, color: '#166534', textTransform: 'uppercase', margin: 0 }}>
@@ -241,6 +241,7 @@ export default function ProfilOrganisasiPage() {
                       fontFamily: "'Traditional Arabic', 'Arial', serif",
                       direction: 'rtl',
                       unicodeBidi: 'bidi-override',
+                      textAlign: 'right',
                     }}>
                       {form.namaArab}
                     </p>

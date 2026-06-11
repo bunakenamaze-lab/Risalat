@@ -4,6 +4,12 @@ const PDFDocument = require('pdfkit');
 const path   = require('path');
 const fs     = require('fs');
 
+// ── Font paths Arial Narrow ───────────────────────────────────────────────────
+const FONTS_DIR      = path.join(__dirname, '../utils/fonts');
+const FONT_NARROW_R  = path.join(FONTS_DIR, 'ArialNarrow.ttf');
+const FONT_NARROW_B  = path.join(FONTS_DIR, 'ArialNarrowBold.ttf');
+const HAS_NARROW     = fs.existsSync(FONT_NARROW_R);
+
 // ── Helper format tanggal ─────────────────────────────────────────────────────
 function fmtDate(d) {
   if (!d) return '-';
@@ -216,13 +222,19 @@ const exportPDF = async (req, res) => {
     const tingkatan  = organisasi?.tingkatanOrg || '';
     const daerah     = organisasi?.daerahOrg  || '';
 
-    const F_REG  = 'Helvetica';
-    const F_BOLD = 'Helvetica-Bold';
+    const F_REG  = HAS_NARROW ? 'ArialNarrow'     : 'Helvetica';
+    const F_BOLD = HAS_NARROW ? 'ArialNarrowBold' : 'Helvetica-Bold';
     const ML = 40, MR = 40, MT = 40;
     const PW = 841.89, PH = 595.28; // A4 landscape
     const CW = PW - ML - MR;
 
     const doc = new PDFDocument({ size: 'A4', layout: 'landscape', margin: 0, bufferPages: true });
+    if (HAS_NARROW) {
+      try {
+        doc.registerFont('ArialNarrow',     FONT_NARROW_R);
+        doc.registerFont('ArialNarrowBold', FONT_NARROW_B);
+      } catch (_) {}
+    }
     const chunks = [];
     doc.on('data', c => chunks.push(c));
 
