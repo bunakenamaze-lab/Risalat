@@ -9,14 +9,11 @@ const FONTS_DIR       = path.join(__dirname, 'fonts');
 const FONT_ARAB_R     = path.join(FONTS_DIR, 'TraditionalArabic.ttf');
 const FONT_ARAB_B     = path.join(FONTS_DIR, 'TraditionalArabicBold.ttf');
 const FONT_NASKH      = path.join(FONTS_DIR, 'DecoTypeNaskhSwashes.ttf');
-const FONT_TRAJAN_R   = path.join(FONTS_DIR, 'TrajanPro-Regular.ttf');
-const FONT_TRAJAN_B   = path.join(FONTS_DIR, 'TrajanPro-Bold.otf');
 const HAS_ARAB        = fs2.existsSync(FONT_ARAB_R);
 const HAS_NASKH       = fs2.existsSync(FONT_NASKH);
-const HAS_TRAJAN      = fs2.existsSync(FONT_TRAJAN_R);
 
 // ── FONT NAMES ───────────────────────────────────────────────────────────[...]
-// Teks isi surat menggunakan Helvetica (font built-in PDFKit, tidak perlu file TTF)
+// Semua font menggunakan built-in PDFKit — tidak perlu file TTF eksternal
 const F_REG       = 'Helvetica';
 const F_BOLD      = 'Helvetica-Bold';
 const F_ITAL      = 'Helvetica-Oblique';
@@ -24,9 +21,8 @@ const F_BOLD_ITAL = 'Helvetica-BoldOblique';
 const F_ARAB      = 'ArabFont';
 const F_ARAB_BOLD = 'ArabFontBold';
 const F_NASKH     = 'NaskhFont';
-// Font Trajan Pro — khusus nama lembaga di kop surat
-const F_TRAJAN    = HAS_TRAJAN ? 'TrajanPro' : F_BOLD;
-let   F_TRAJAN_B  = F_BOLD; // default fallback, di-update di registerArabFonts jika OTF berhasil
+// Nama lembaga di kop surat menggunakan Times-Bold (built-in PDFKit)
+const F_TRAJAN_B  = 'Times-Bold';
 
 // ── PAGE CONSTANTS ─────────────────────────────────────────────────────────[...]
 const ML = 57;   // margin left
@@ -72,24 +68,6 @@ function isArabic(s) {
 }
 
 function registerArabFonts(doc) {
-  // Daftarkan Trajan Pro untuk nama lembaga di kop surat
-  if (HAS_TRAJAN) {
-    try {
-      doc.registerFont('TrajanPro', FONT_TRAJAN_R);
-      // Coba daftarkan Bold (OTF) — PDFKit mungkin tidak support semua OTF
-      try {
-        doc.registerFont('TrajanProBold', FONT_TRAJAN_B);
-        F_TRAJAN_B = 'TrajanProBold'; // berhasil, gunakan Trajan Bold
-      } catch (_) {
-        // OTF gagal — gunakan Regular sebagai Bold (lebih baik daripada crash)
-        doc.registerFont('TrajanProBold', FONT_TRAJAN_R);
-        F_TRAJAN_B = 'TrajanProBold';
-        console.warn('⚠️ TrajanPro Bold (OTF) tidak didukung, fallback ke Regular');
-      }
-    } catch (_) {
-      F_TRAJAN_B = F_BOLD; // Trajan sama sekali gagal, pakai Arial Narrow Bold
-    }
-  }
   // Daftarkan font Arab
   if (HAS_ARAB) {
     try {
