@@ -867,17 +867,13 @@ async function drawKopSurat(doc, organisasi, pageY) {
   const email     = organisasi.email        || '';
   const website   = organisasi.website      || '';
 
-  const logoMaxSize = 80;  // batas maksimal logo (diperbesar dari 65)
+  const logoMaxSize = 75;
   const logoX       = ML;
   const textX       = hasLogo ? ML + logoMaxSize + 10 : ML;
   const textW       = hasLogo ? CW - logoMaxSize - 10  : CW;
   let   y           = pageY !== undefined ? pageY : MT;
 
-  // Render teks kop dulu ke buffer posisi untuk menghitung total tinggi,
-  // lalu posisikan logo di tengah vertikal terhadap tinggi teks tersebut.
-  // Karena PDFKit tidak bisa "undo" render, kita estimasi tinggi teks kop
-  // lalu gambar logo di y + (kopTextH - drawH) / 2
-
+  // Gambar logo mulai dari y (sejajar baris pertama teks kop)
   if (hasLogo) {
     try {
       const imgInfo = doc.openImage(logoPath);
@@ -894,22 +890,7 @@ async function drawKopSurat(doc, organisasi, pageY) {
         drawW = logoMaxSize * ratio;
       }
 
-      // Estimasi tinggi total teks kop agar bisa center logo secara vertikal
-      const lineCount =
-        (tingkatan ? 1 : 0) +
-        (namaArab  ? 1 : 0) +
-        (namaOrg   ? 1 : 0) +
-        (daerah    ? 1 : 0) +
-        (alamat    ? 1 : 0) +
-        ((telepon || email || website) ? 1 : 0);
-      const estimatedTextH = Math.max(
-        lineCount * 18,   // estimasi kasar tiap baris ~18pt
-        drawH             // minimal setinggi logo itu sendiri
-      );
-
-      const logoY = y + Math.max(0, (estimatedTextH - drawH) / 2);
-      doc.image(logoPath, logoX, logoY, { width: drawW, height: drawH });
-      console.log('✅ Logo berhasil ditampilkan:', logoPath);
+      doc.image(logoPath, logoX, y, { width: drawW, height: drawH });
     } catch (err) {
       console.warn('⚠️ Error rendering logo:', err.message);
       try { doc.image(logoPath, logoX, y, { width: logoMaxSize }); } catch (e) {
@@ -918,14 +899,14 @@ async function drawKopSurat(doc, organisasi, pageY) {
     }
   }
 
-  // Tingkatan — hanya render jika tidak kosong
+  // Tingkatan — Times-Roman 10pt
   if (tingkatan) {
-    doc.font(F_BOLD).fontSize(FS_KOP_TINGKAT).fillColor(GREEN)
+    doc.font('Times-Roman').fontSize(10).fillColor(GREEN)
        .text(tingkatan.toUpperCase(), textX, y, { width: textW, align: 'right' });
     y = doc.y + 1;
   }
 
-  // Nama Arab yayasan — tepat di bawah tingkatan, sebelum nama Latin
+  // Nama Arab yayasan
   if (namaArab && HAS_ARAB) {
     try {
       doc.font(F_ARAB).fontSize(FS_KOP_ARAB).fillColor(GREEN)
@@ -936,16 +917,16 @@ async function drawKopSurat(doc, organisasi, pageY) {
     }
   }
 
-  // Nama organisasi (Latin) — font Trajan Pro, hanya render jika tidak kosong
+  // Nama organisasi — Times-Bold 12pt
   if (namaOrg) {
-    doc.font(F_TRAJAN_B).fontSize(FS_KOP_NAMA).fillColor(GREEN)
+    doc.font('Times-Bold').fontSize(FS_KOP_NAMA).fillColor(GREEN)
        .text(namaOrg.toUpperCase(), textX, y, { width: textW, align: 'right' });
     y = doc.y + 1;
   }
 
-  // Daerah
+  // Daerah — Times-Bold 12pt
   if (daerah) {
-    doc.font(F_BOLD).fontSize(FS_KOP_DAERAH).fillColor(GREEN)
+    doc.font('Times-Bold').fontSize(12).fillColor(GREEN)
        .text(daerah.toUpperCase(), textX, y, { width: textW, align: 'right' });
     y = doc.y + 1;
   }
@@ -957,7 +938,7 @@ async function drawKopSurat(doc, organisasi, pageY) {
     y = doc.y + 1;
   }
 
-  // Kontak — teks biasa dengan prefiks, dipisah |
+  // Kontak
   const kontakParts = [];
   if (telepon) kontakParts.push(`No. Telp.: ${telepon}`);
   if (email)   kontakParts.push(`Email: ${email}`);

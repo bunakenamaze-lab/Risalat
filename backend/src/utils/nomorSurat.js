@@ -2,36 +2,10 @@ const prisma = require('../config/prisma');
 
 const BULAN_ROMAWI = ['I','II','III','IV','V','VI','VII','VIII','IX','X','XI','XII'];
 
-// Kode klasifikasi surat — statis sesuai ketentuan organisasi
-const KODE_KLASIFIKASI = 'PP.06';
-
-/**
- * Buat singkatan dari tingkatan dan nama organisasi
- * Contoh: "Pimpinan Cabang" + "Fatayat Nahdlatul Ulama" → "PC-FNU"
- */
-function buatSingkatan(tingkatan, namaOrg) {
-  const singkatTingkatan = tingkatan
-    .split(' ')
-    .map(w => w[0]?.toUpperCase() || '')
-    .join('');
-
-  const singkatNama = namaOrg
-    .split(' ')
-    .map(w => w[0]?.toUpperCase() || '')
-    .join('');
-
-  return `${singkatTingkatan}-${singkatNama}`;
-}
-
 /**
  * Generate nomor surat otomatis
- * Format: 001/A/PC-FNU/PP.06/V/2026
- * - 001     = urutan surat bulan ini
- * - A       = jenis surat (A/B/C/SK/...)
- * - PC-FNU  = singkatan tingkatan + nama org
- * - PP.06   = kode klasifikasi (statis)
- * - V       = bulan romawi
- * - 2026    = tahun
+ * Format: 87.1992/Urutan-Surat.Bulan-Romawi/YAPINU/Tahun
+ * Contoh: 87.1992/001.VI/YAPINU/2026
  */
 async function generateNomorSurat(jenisSurat = 'A') {
   const now   = new Date();
@@ -48,12 +22,22 @@ async function generateNomorSurat(jenisSurat = 'A') {
     },
   });
 
-  const urutan = String(count + 1).padStart(3, '0');
+  const urutan       = String(count + 1).padStart(3, '0');
+  const bulanRomawi  = BULAN_ROMAWI[bulan - 1];
 
-  // Singkatan organisasi — statis sesuai ketentuan
-  const singkatan = 'YPPS';
+  return `87.1992/${urutan}.${bulanRomawi}/${jenisSurat}/YAPINU/${tahun}`;
+}
 
-  return `${urutan}/${jenisSurat}/${singkatan}/${KODE_KLASIFIKASI}/${BULAN_ROMAWI[bulan - 1]}/${tahun}`;
+function buatSingkatan(tingkatan, namaOrg) {
+  const singkatTingkatan = tingkatan
+    .split(' ')
+    .map(w => w[0]?.toUpperCase() || '')
+    .join('');
+  const singkatNama = namaOrg
+    .split(' ')
+    .map(w => w[0]?.toUpperCase() || '')
+    .join('');
+  return `${singkatTingkatan}-${singkatNama}`;
 }
 
 module.exports = { generateNomorSurat, buatSingkatan };

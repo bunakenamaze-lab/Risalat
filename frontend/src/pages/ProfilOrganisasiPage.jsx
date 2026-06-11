@@ -79,8 +79,8 @@ export default function ProfilOrganisasiPage() {
   if (isLoading) return <PageLoader />
 
   const currentLogo = logoPreview || (profil?.logoPath ? getUploadUrl(profil.logoPath) : null)
-  // Preview nomor surat — singkatan dan PP.06 statis
-  const previewNomor = `001/A/YPPS/PP.06/V/${new Date().getFullYear()}`
+  // Preview nomor surat — format baru 87.1992/Urutan.Bulan-Romawi/YAPINU/Tahun
+  const previewNomor = `87.1992/001.${['I','II','III','IV','V','VI','VII','VIII','IX','X','XI','XII'][new Date().getMonth()]}/A/YAPINU/${new Date().getFullYear()}`
 
   return (
     <div className="space-y-5 max-w-2xl">
@@ -172,7 +172,7 @@ export default function ProfilOrganisasiPage() {
             <p className="text-xs text-gray-500 mb-1">Preview format nomor surat:</p>
             <p className="font-mono text-sm font-semibold text-primary-700">{previewNomor}</p>
             <p className="text-xs text-gray-400 mt-1">
-              Urutan / Jenis / <strong>YPPS</strong> / PP.06 / Bulan-Romawi / Tahun
+              <strong>87.1992</strong> / Urutan.Bulan-Romawi / Jenis-Surat / <strong>YAPINU</strong> / Tahun
             </p>
           </div>
         </div>
@@ -212,49 +212,45 @@ export default function ProfilOrganisasiPage() {
           <h2 className="section-title mb-4">Preview Kop Surat</h2>
           <div className="border border-gray-200 rounded-xl p-4 bg-white overflow-x-auto">
             <div style={{ minWidth: 420 }}>
-              {/* Area kop — logo kiri, teks kanan */}
-              <div className="flex items-center gap-0" style={{ paddingBottom: 6 }}>
-                {/* Logo */}
+              {/* Area kop — logo kiri (align atas), teks kanan */}
+              <div className="flex items-start gap-0" style={{ paddingBottom: 6 }}>
+                {/* Logo — sejajar atas dengan teks */}
                 {currentLogo && (
-                  <div className="flex-shrink-0 flex items-center justify-center" style={{ width: 80, height: 80, marginRight: 10 }}>
+                  <div className="flex-shrink-0" style={{ width: 75, height: 75, marginRight: 10 }}>
                     <img
                       src={currentLogo}
                       alt="Logo"
-                      style={{ maxWidth: 80, maxHeight: 80, width: 'auto', height: 'auto', objectFit: 'contain' }}
+                      style={{ maxWidth: 75, maxHeight: 75, width: 'auto', height: 'auto', objectFit: 'contain' }}
                     />
                   </div>
                 )}
                 {/* Teks kop */}
                 <div className="flex-1 text-right" style={{ lineHeight: 1.25 }}>
-                  {/* Tingkatan — hanya jika diisi */}
+                  {/* Tingkatan — Times New Roman 10pt */}
                   {form.tingkatanOrg && (
-                    <p style={{ fontSize: 10, fontWeight: 700, color: '#166534', textTransform: 'uppercase', margin: 0 }}>
+                    <p style={{ fontSize: 10, fontWeight: 400, color: '#166534', textTransform: 'uppercase', margin: 0, fontFamily: 'Times New Roman, Times, serif' }}>
                       {form.tingkatanOrg}
                     </p>
                   )}
                   {/* Nama Arab — hanya jika diisi */}
                   {form.namaArab && (
                     <p style={{
-                      fontSize: 18,
-                      color: '#166534',
-                      margin: '2px 0',
+                      fontSize: 18, color: '#166534', margin: '2px 0',
                       fontFamily: "'Traditional Arabic', 'Arial', serif",
-                      direction: 'rtl',
-                      unicodeBidi: 'bidi-override',
-                      textAlign: 'right',
+                      direction: 'rtl', unicodeBidi: 'bidi-override', textAlign: 'right',
                     }}>
                       {form.namaArab}
                     </p>
                   )}
-                  {/* Nama Org — hanya jika diisi */}
+                  {/* Nama Org — Times New Roman Bold 12pt */}
                   {form.namaOrg && (
-                    <p style={{ fontSize: 14, fontWeight: 700, color: '#166534', textTransform: 'uppercase', margin: '1px 0', fontFamily: 'Times New Roman, Times, serif' }}>
+                    <p style={{ fontSize: 12, fontWeight: 700, color: '#166534', textTransform: 'uppercase', margin: '1px 0', fontFamily: 'Times New Roman, Times, serif' }}>
                       {form.namaOrg}
                     </p>
                   )}
-                  {/* Daerah */}
+                  {/* Daerah — Times New Roman Bold 12pt */}
                   {form.daerahOrg && (
-                    <p style={{ fontSize: 11, fontWeight: 700, color: '#166534', textTransform: 'uppercase', margin: '1px 0' }}>
+                    <p style={{ fontSize: 12, fontWeight: 700, color: '#166534', textTransform: 'uppercase', margin: '1px 0', fontFamily: 'Times New Roman, Times, serif' }}>
                       {form.daerahOrg}
                     </p>
                   )}
