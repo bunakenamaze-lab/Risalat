@@ -248,7 +248,7 @@ export default function ProfilOrganisasiPage() {
                   )}
                   {/* Nama Org — hanya jika diisi */}
                   {form.namaOrg && (
-                    <p style={{ fontSize: 16, fontWeight: 700, color: '#166534', textTransform: 'uppercase', margin: '1px 0' }}>
+                    <p style={{ fontSize: 14, fontWeight: 700, color: '#166534', textTransform: 'uppercase', margin: '1px 0', fontFamily: 'Times New Roman, Times, serif' }}>
                       {form.namaOrg}
                     </p>
                   )}
@@ -276,8 +276,7 @@ export default function ProfilOrganisasiPage() {
                   )}
                 </div>
               </div>
-              {/* Garis tebal hijau */}
-              <div style={{ height: 2.5, backgroundColor: '#166534', marginTop: 4 }} />
+              {/* Tanpa garis pemisah */}
             </div>
             <p className="text-[10px] text-gray-400 text-center mt-3 italic">
               Kop surat akan tampil seperti ini pada setiap halaman dokumen resmi

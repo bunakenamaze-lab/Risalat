@@ -38,7 +38,7 @@ const FS_ARAB         = 14;
 const LINE_GAP        = 2;   // line gap untuk paragraf biasa
 const LINE_GAP_TABLE  = 0;   // line gap dalam sel tabel — rapat seperti paragraf biasa
 const FS_KOP_TINGKAT  = 10;
-const FS_KOP_NAMA     = 16;
+const FS_KOP_NAMA     = 12;
 const FS_KOP_ARAB     = 22;  // font Arab di kop surat
 const FS_KOP_DAERAH   = 11;
 const FS_KOP_ALAMAT   = 8.5;
@@ -969,11 +969,8 @@ async function drawKopSurat(doc, organisasi, pageY) {
     y = doc.y + 1;
   }
 
-  // Satu garis tebal saja
-  const lineY = Math.max(y + 4, (pageY !== undefined ? pageY : MT) + logoMaxSize + 4);
-  doc.moveTo(ML, lineY).lineTo(ML + CW, lineY).lineWidth(2.5).strokeColor(GREEN).stroke();
-
-  return lineY + 2;
+  // Tanpa garis pemisah — kop surat bersih
+  return y + 6;
 }
 
 // ── IDENTITAS SURAT ─────────────────────────────────────────────────────────[...]
