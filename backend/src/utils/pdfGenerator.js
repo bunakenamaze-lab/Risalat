@@ -9,28 +9,22 @@ const FONTS_DIR       = path.join(__dirname, 'fonts');
 const FONT_ARAB_R     = path.join(FONTS_DIR, 'TraditionalArabic.ttf');
 const FONT_ARAB_B     = path.join(FONTS_DIR, 'TraditionalArabicBold.ttf');
 const FONT_NASKH      = path.join(FONTS_DIR, 'DecoTypeNaskhSwashes.ttf');
-const FONT_NARROW_R   = path.join(FONTS_DIR, 'ArialNarrow.ttf');
-const FONT_NARROW_B   = path.join(FONTS_DIR, 'ArialNarrowBold.ttf');
-const FONT_NARROW_I   = path.join(FONTS_DIR, 'ArialNarrowItalic.ttf');
-const FONT_NARROW_BI  = path.join(FONTS_DIR, 'ArialNarrowBoldItalic.ttf');
 const FONT_TRAJAN_R   = path.join(FONTS_DIR, 'TrajanPro-Regular.ttf');
 const FONT_TRAJAN_B   = path.join(FONTS_DIR, 'TrajanPro-Bold.otf');
 const HAS_ARAB        = fs2.existsSync(FONT_ARAB_R);
 const HAS_NASKH       = fs2.existsSync(FONT_NASKH);
-const HAS_NARROW      = fs2.existsSync(FONT_NARROW_R);
 const HAS_TRAJAN      = fs2.existsSync(FONT_TRAJAN_R);
 
 // ── FONT NAMES ───────────────────────────────────────────────────────────[...]
-// Teks isi surat menggunakan Arial Narrow (fallback Times jika tidak tersedia)
-const F_REG       = HAS_NARROW ? 'ArialNarrow'         : 'Times-Roman';
-const F_BOLD      = HAS_NARROW ? 'ArialNarrowBold'     : 'Times-Bold';
-const F_ITAL      = HAS_NARROW ? 'ArialNarrowItalic'   : 'Times-Italic';
-const F_BOLD_ITAL = HAS_NARROW ? 'ArialNarrowBoldItalic' : 'Times-BoldItalic';
+// Teks isi surat menggunakan Helvetica (font built-in PDFKit, tidak perlu file TTF)
+const F_REG       = 'Helvetica';
+const F_BOLD      = 'Helvetica-Bold';
+const F_ITAL      = 'Helvetica-Oblique';
+const F_BOLD_ITAL = 'Helvetica-BoldOblique';
 const F_ARAB      = 'ArabFont';
 const F_ARAB_BOLD = 'ArabFontBold';
 const F_NASKH     = 'NaskhFont';
 // Font Trajan Pro — khusus nama lembaga di kop surat
-// F_TRAJAN_B akan di-resolve saat runtime setelah mencoba registerFont
 const F_TRAJAN    = HAS_TRAJAN ? 'TrajanPro' : F_BOLD;
 let   F_TRAJAN_B  = F_BOLD; // default fallback, di-update di registerArabFonts jika OTF berhasil
 
@@ -78,15 +72,6 @@ function isArabic(s) {
 }
 
 function registerArabFonts(doc) {
-  // Daftarkan Arial Narrow untuk teks isi surat
-  if (HAS_NARROW) {
-    try {
-      doc.registerFont('ArialNarrow',           FONT_NARROW_R);
-      doc.registerFont('ArialNarrowBold',       FONT_NARROW_B);
-      doc.registerFont('ArialNarrowItalic',     FONT_NARROW_I);
-      doc.registerFont('ArialNarrowBoldItalic', FONT_NARROW_BI);
-    } catch (_) {}
-  }
   // Daftarkan Trajan Pro untuk nama lembaga di kop surat
   if (HAS_TRAJAN) {
     try {
