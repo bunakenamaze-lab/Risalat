@@ -75,7 +75,7 @@ export default function LoginPage() {
               )}
             </motion.div>
             <h1 className="text-2xl font-bold text-white mb-1">RISALAT</h1>
-            <p className="text-primary-200 text-sm">Repositori Informasi Surat dan Administrasi Terpadu YAPINU</p>
+            <p className="text-primary-200 text-sm">Repositori Informasi Surat dan Administrasi Terpadu Yayasan Pendidikan Islam Nahdlatul Ulama</p>
           </div>
 
           {/* Form */}
@@ -139,7 +139,7 @@ export default function LoginPage() {
 
         {/* Footer */}
         <p className="text-center text-primary-200 text-xs mt-6">
-          RISALAT © {new Date().getFullYear()} — Repositori Informasi Surat dan Administrasi Terpadu YAPINU
+          RISALAT © {new Date().getFullYear()} — Repositori Informasi Surat dan Administrasi Terpadu
         </p>
       </motion.div>
     </div>

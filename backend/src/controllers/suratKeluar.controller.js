@@ -375,8 +375,8 @@ const downloadPDF = async (req, res) => {
       if (fs.existsSync(filepath)) fs.unlinkSync(filepath);
     });
   } catch (err) {
-    console.error(err);
-    res.status(500).json({ success: false, message: 'Gagal generate PDF' });
+    console.error('downloadPDF error:', err);
+    res.status(500).json({ success: false, message: 'Gagal generate PDF', detail: err.message });
   }
 };
 
@@ -406,8 +406,8 @@ const previewPDF = async (req, res) => {
       if (!res.headersSent) res.status(500).json({ success: false, message: 'Gagal membaca PDF' });
     });
   } catch (err) {
-    console.error(err);
-    res.status(500).json({ success: false, message: 'Gagal generate preview PDF' });
+    console.error('previewPDF error:', err);
+    res.status(500).json({ success: false, message: 'Gagal generate preview PDF', detail: err.message });
   }
 };
 

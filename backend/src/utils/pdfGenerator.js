@@ -30,8 +30,9 @@ const F_ARAB      = 'ArabFont';
 const F_ARAB_BOLD = 'ArabFontBold';
 const F_NASKH     = 'NaskhFont';
 // Font Trajan Pro — khusus nama lembaga di kop surat
+// F_TRAJAN_B akan di-resolve saat runtime setelah mencoba registerFont
 const F_TRAJAN    = HAS_TRAJAN ? 'TrajanPro' : F_BOLD;
-const F_TRAJAN_B  = HAS_TRAJAN ? 'TrajanProBold' : F_BOLD;
+let   F_TRAJAN_B  = F_BOLD; // default fallback, di-update di registerArabFonts jika OTF berhasil
 
 // ── PAGE CONSTANTS ─────────────────────────────────────────────────────────[...]
 const ML = 57;   // margin left
@@ -89,9 +90,20 @@ function registerArabFonts(doc) {
   // Daftarkan Trajan Pro untuk nama lembaga di kop surat
   if (HAS_TRAJAN) {
     try {
-      doc.registerFont('TrajanPro',     FONT_TRAJAN_R);
-      doc.registerFont('TrajanProBold', FONT_TRAJAN_B);
-    } catch (_) {}
+      doc.registerFont('TrajanPro', FONT_TRAJAN_R);
+      // Coba daftarkan Bold (OTF) — PDFKit mungkin tidak support semua OTF
+      try {
+        doc.registerFont('TrajanProBold', FONT_TRAJAN_B);
+        F_TRAJAN_B = 'TrajanProBold'; // berhasil, gunakan Trajan Bold
+      } catch (_) {
+        // OTF gagal — gunakan Regular sebagai Bold (lebih baik daripada crash)
+        doc.registerFont('TrajanProBold', FONT_TRAJAN_R);
+        F_TRAJAN_B = 'TrajanProBold';
+        console.warn('⚠️ TrajanPro Bold (OTF) tidak didukung, fallback ke Regular');
+      }
+    } catch (_) {
+      F_TRAJAN_B = F_BOLD; // Trajan sama sekali gagal, pakai Arial Narrow Bold
+    }
   }
   // Daftarkan font Arab
   if (HAS_ARAB) {
@@ -1619,7 +1631,13 @@ async function generateLayoutRutin(doc, surat, organisasi, qrDataUrl, FOOTER_RES
 
 // ── MAIN EXPORT ──────────────────────────────────────────────────────────[...]
 async function generateSuratPDF(surat, organisasi) {
-  const uploadDir = path.join(__dirname, '../../uploads/pdf');
+  // Gunakan UPLOAD_DIR dari env agar konsisten dengan konfigurasi server
+  const BASE_UPLOAD = process.env.UPLOAD_DIR
+    ? (process.env.UPLOAD_DIR.startsWith('/')
+        ? process.env.UPLOAD_DIR
+        : path.join(__dirname, '../../', process.env.UPLOAD_DIR))
+    : path.join(__dirname, '../../uploads');
+  const uploadDir = path.join(BASE_UPLOAD, 'pdf');
   if (!fs2.existsSync(uploadDir)) fs2.mkdirSync(uploadDir, { recursive: true });
 
   const safeNomor = (surat.nomorSurat || surat.id).replace(/\//g, '-');
